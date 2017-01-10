@@ -26,3 +26,10 @@ curl -X POST -F "image=http://www.w3schools.com/html/pic_mountain.jpg" "http://l
 ```
 
 That should be it
+
+## Limitations (V0)
+
++ Only JPEG
++ 42x42 fixed ratio (will square all images)
++ Fixed level of details
++ Static headers extraction
