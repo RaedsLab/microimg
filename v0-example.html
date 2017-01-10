@@ -75,6 +75,7 @@
             'GgAAAgMBAQAAAAAAAAAAAAAAAAQBAwUCBv/EACcQAAIBBAAFAwUAAAAAAAAAAAECAAMEESEFEiJBYVFysTFxwcLw/8QAFwEAAwEAAAAAAAAAAAAAAAAAAQMEAv/EABsRAQADAQEBAQAAAAAAAAAAAAEAAhEDMhIh/9oADAMBAAIRAxEAPwD00qrV0ogF87+gAzLYpfnBpfc/EFnCaqa4zh+IOdUrdj5Y4nNte1XuRSqIoyca7aJ/Ep5jzkZAx3H95nNqc8QXeev9Wiiy2P2OtUKuE2IQhHSeES4kcLT3jZ+I7EuJAEUgSBknZmb+Yzn6Jms7eJdZAi9Tmxnn3j2tF3GgeUemoxZo1O+RWxkP29rSenolXTPhmzCEJVIYRe8tzcKoDAEesYhAmmMIo6THq2VdRqkG8oZNhTqm6VmVuk5YnXYia8iYOYOka9VrjJhCEZEz/9k='
         );
 
+        var start_proccess = performance.now();
         var imageBuffer = _appendBuffer(headers, imageBase64Data)
         var imageBytes = new Uint8Array(imageBuffer);
 
@@ -84,6 +85,8 @@
         var reader = new FileReader();
         reader.onload = function(e) {
             image.src = e.target.result;
+            var end_proccess = performance.now();
+            console.log("Image proccessing took " + (end_proccess - start_proccess) + " milliseconds.")
         };
         reader.readAsDataURL(imageBlob);
     </script>
