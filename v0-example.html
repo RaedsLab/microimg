@@ -30,65 +30,18 @@
             return byteArray;
         }
 
-        var _appendBuffer = function(buffer1, buffer2) {
-            var tmp = new Uint8Array(buffer1.byteLength + buffer2.byteLength);
-            tmp.set(new Uint8Array(buffer1), 0);
-            tmp.set(new Uint8Array(buffer2), buffer1.byteLength);
-            return tmp.buffer;
-        }
-
-        // public method for encoding an Uint8Array to base64
-        function encode(input) {
-            var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-            var output = "";
-            var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
-            var i = 0;
-
-            while (i < input.length) {
-                chr1 = input[i++];
-                chr2 = i < input.length ? input[i++] : Number.NaN; // Not sure if the index
-                chr3 = i < input.length ? input[i++] : Number.NaN; // checks are needed here
-
-                enc1 = chr1 >> 2;
-                enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-                enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-                enc4 = chr3 & 63;
-
-                if (isNaN(chr2)) {
-                    enc3 = enc4 = 64;
-                } else if (isNaN(chr3)) {
-                    enc4 = 64;
-                }
-                output += keyStr.charAt(enc1) + keyStr.charAt(enc2) +
-                    keyStr.charAt(enc3) + keyStr.charAt(enc4);
-            }
-            return output;
-        }
-
-        //Static header from v0 python
-        var headers = base64ToByteArray(
-            '/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAqACoDASIAAhEBAxEB/8QA'
-        );
-
-        // Actual image data
-        var imageBase64Data = base64ToByteArray(
-            'GgAAAgMBAQAAAAAAAAAAAAAAAAQBAwUCBv/EACcQAAIBBAAFAwUAAAAAAAAAAAECAAMEESEFEiJBYVFysTFxwcLw/8QAFwEAAwEAAAAAAAAAAAAAAAAAAQMEAv/EABsRAQADAQEBAQAAAAAAAAAAAAEAAhEDMhIh/9oADAMBAAIRAxEAPwD00qrV0ogF87+gAzLYpfnBpfc/EFnCaqa4zh+IOdUrdj5Y4nNte1XuRSqIoyca7aJ/Ep5jzkZAx3H95nNqc8QXeev9Wiiy2P2OtUKuE2IQhHSeES4kcLT3jZ+I7EuJAEUgSBknZmb+Yzn6Jms7eJdZAi9Tmxnn3j2tF3GgeUemoxZo1O+RWxkP29rSenolXTPhmzCEJVIYRe8tzcKoDAEesYhAmmMIo6THq2VdRqkG8oZNhTqm6VmVuk5YnXYia8iYOYOka9VrjJhCEZEz/9k='
-        );
-
         var start_proccess = performance.now();
-        var imageBuffer = _appendBuffer(headers, imageBase64Data)
-        var imageBytes = new Uint8Array(imageBuffer);
 
-        var imageBlob = new Blob([imageBytes.buffer]);
+        var imageBuffer =
+            '/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAAqACoDASIAAhEBAxEB/8QA' +
+            'GgAAAgMBAQAAAAAAAAAAAAAAAAQBAwUCBv/EACcQAAIBBAAFAwUAAAAAAAAAAAECAAMEESEFEiJBYVFysTFxwcLw/8QAFwEAAwEAAAAAAAAAAAAAAAAAAQMEAv/EABsRAQADAQEBAQAAAAAAAAAAAAEAAhEDMhIh/9oADAMBAAIRAxEAPwD00qrV0ogF87+gAzLYpfnBpfc/EFnCaqa4zh+IOdUrdj5Y4nNte1XuRSqIoyca7aJ/Ep5jzkZAx3H95nNqc8QXeev9Wiiy2P2OtUKuE2IQhHSeES4kcLT3jZ+I7EuJAEUgSBknZmb+Yzn6Jms7eJdZAi9Tmxnn3j2tF3GgeUemoxZo1O+RWxkP29rSenolXTPhmzCEJVIYRe8tzcKoDAEesYhAmmMIo6THq2VdRqkG8oZNhTqm6VmVuk5YnXYia8iYOYOka9VrjJhCEZEz/9k=';
 
+        var src = 'data:image/png;base64,' + imageBuffer
         var image = document.getElementById('img');
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            image.src = e.target.result;
-            var end_proccess = performance.now();
-            console.log("Image proccessing took " + (end_proccess - start_proccess) + " milliseconds.")
-        };
-        reader.readAsDataURL(imageBlob);
+        image.src = src;
+        var end_proccess = performance.now();
+        console.log("Image proccessing took " + (end_proccess - start_proccess) + " milliseconds.")
+
     </script>
 </body>
 
