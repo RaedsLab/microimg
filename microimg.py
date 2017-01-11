@@ -42,12 +42,20 @@ def v0():
         im_hex = binascii.hexlify(bytes_data)
 
         # remove headers
-        im_hex = im_hex.replace('ffd8ffe000104a46494600010100000100010000ffdb0043001b12141714111b1716171e1c1b2028422b28252528513a3d3042605565645f555d5b6a7899816a7190735b5d85b586909ea3abadab6780bcc9baa6c799a8aba4ffdb0043011c1e1e2823284e2b2b4ea46e5d6ea4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4ffc0001108002a002a03012200021101031101ffc400', '')
-        im_base64 = im_hex.decode("hex").encode("base64")
+        im_header_hex = im_hex[0:360]
+        im_body_hex = im_hex.replace('im_header_hex', '')
+
+        # remove trailing FF D9
+        im_body_hex = im_body_hex.replace('ffd9', '')
+
+        im_body_base64 = im_body_hex.decode("hex").encode("base64")
+        im_header_base64 = im_header_hex.decode("hex").encode("base64")
+
         process_elapsed = timeit.default_timer() - process_start_time
 
         return jsonify(status="ok",
-                       data=im_base64,
+                       header=im_header_base64,
+                       data=im_body_base64,
                        load_time=load_elapsed,
                        process_time=process_elapsed)
 
