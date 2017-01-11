@@ -16,7 +16,7 @@ app = Flask(__name__)
 
 
 @app.route("/", methods=['GET'])
-def hello:
+def hello():
     return "[POST] /v0/ -F image"
 
 
