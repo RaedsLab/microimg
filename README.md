@@ -33,3 +33,8 @@ That should be it
 + 42x42 fixed ratio (will square all images)
 + Fixed level of details
 + Static headers extraction
+
+
+## Heroku
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/RaedsLab/microimg/tree/python-backend)
