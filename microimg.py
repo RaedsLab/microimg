@@ -15,6 +15,11 @@ size = 42, 42
 app = Flask(__name__)
 
 
+@app.route("/", methods=['GET'])
+def hello:
+    return "[POST] /v0/ -F image"
+
+
 @app.route("/v0/", methods=['POST'])
 def v0():
     imageURL = request.values.get('image')
