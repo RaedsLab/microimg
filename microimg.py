@@ -7,6 +7,7 @@ import requests
 from io import BytesIO
 import io
 import binascii
+import base64
 
 import os
 
@@ -40,25 +41,25 @@ def v0():
         output = io.BytesIO()
         img.thumbnail(size, Image.ANTIALIAS)
 
-        #outfile = "/home/r3d/Desktop/media_thumb.jpeg"
+        #outfile = "/home/xyz/Desktop/media_thumb.jpeg"
         #img.save(outfile, format='JPEG', optimize=True, quality=30)
 
         img.save(output, format='JPEG', optimize=True, quality=30)
 
         bytes_data = output.getvalue()
         im_hex = binascii.hexlify(bytes_data)
-        im_base64 = im_hex.decode("hex").encode("base64")
+        im_base64 = base64.b64encode(im_hex.decode("hex"))
 
         # remove headers
         im_header_hex = im_hex[0:360]
-        im_body_hex = im_hex.replace('im_header_hex', '')
+        im_body_hex = im_hex.replace(im_header_hex, '')
 
         # remove trailing FF D9
-        im_body_hex = im_body_hex.replace('ffd9', '')
+        #im_body_hex = im_body_hex.replace('ffd9', '')
 
-        im_body_base64 = im_body_hex.decode("hex").encode("base64")
+        im_body_base64 = base64.b64encode(im_body_hex.decode("hex"))
 
-        im_header_base64 = im_header_hex.decode("hex").encode("base64")
+        im_header_base64 = base64.b64encode(im_header_hex.decode("hex"))
         process_elapsed = timeit.default_timer() - process_start_time
 
         return jsonify(status="ok",
