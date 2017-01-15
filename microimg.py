@@ -8,9 +8,11 @@ from io import BytesIO
 import io
 import binascii
 
+import os
+
 import timeit
 
-size = 42, 42
+size = 42,  42
 
 app = Flask(__name__)
 
@@ -28,6 +30,7 @@ def v0():
                        message="Image parameter required")
 
     try:
+
         load_start_time = timeit.default_timer()
         sourceImage = requests.get(imageURL)
         img = Image.open(BytesIO(sourceImage.content))
@@ -35,11 +38,16 @@ def v0():
 
         process_start_time = timeit.default_timer()
         output = io.BytesIO()
-        img = img.resize(size, Image.ANTIALIAS)
+        img.thumbnail(size, Image.ANTIALIAS)
+
+        #outfile = "/home/r3d/Desktop/media_thumb.jpeg"
+        #img.save(outfile, format='JPEG', optimize=True, quality=30)
+
         img.save(output, format='JPEG', optimize=True, quality=30)
 
         bytes_data = output.getvalue()
         im_hex = binascii.hexlify(bytes_data)
+        im_base64 = im_hex.decode("hex").encode("base64")
 
         # remove headers
         im_header_hex = im_hex[0:360]
@@ -49,11 +57,12 @@ def v0():
         im_body_hex = im_body_hex.replace('ffd9', '')
 
         im_body_base64 = im_body_hex.decode("hex").encode("base64")
-        im_header_base64 = im_header_hex.decode("hex").encode("base64")
 
+        im_header_base64 = im_header_hex.decode("hex").encode("base64")
         process_elapsed = timeit.default_timer() - process_start_time
 
         return jsonify(status="ok",
+                       full=im_base64,
                        header=im_header_base64,
                        data=im_body_base64,
                        load_time=load_elapsed,
